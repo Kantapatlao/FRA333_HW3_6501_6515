@@ -22,7 +22,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     # W is angular velocity, V is linear velocity
     # Zd is Zeta dot (Derivative of zeta against time)
     # W_i_j mean angular velocity of 'j' reference from 'i' frame
-    # P_0_1 mean position from frame 0's origin to frame 1's origin
+    # P_i_jk mean position from frame j's origin to frame k's origin reference from frame 'i'
 
     # Define variable
     Zd_1 = sp.symbols('Zd_1')
@@ -40,11 +40,36 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     # Frame 1
     # R_1_0 = Transpose(R_0_1)
     R_1_0 = R[:,:,0].transpose()
-    P_0_1 = P[:,0]
+    P_0_01 = P[:,0]
 
     w_1_1 = angular_velo(R_1_0, w_0_0, Zd_1)
-    v_1_1 = linear_velo(R_1_0, v_0_0, w_0_0.reshape(3), P_0_1) 
+    v_1_1 = linear_velo(R_1_0, v_0_0, w_0_0.reshape(3), P_0_01)
 
+    # Frame 2
+    # R_2_1 = R_2_0 * R_0_1 = Transpose(R_0_2) * R_0_1
+    R_2_1 = R[:,:,1].transpose() @ R[:,:,0]
+    
+    # P_1_12 = P_1_02 - P_1_01 =  R_1_0(P_0_02) - R_1_0(P_0_01) = R_1_0(P_0_02 - P_0_01)
+    P_1_12 = R_1_0 @ (P[:,1] - P[:,0])
+
+    
+    w_2_2 = angular_velo(R_2_1, w_1_1, Zd_2)
+    v_2_2 = linear_velo(R_2_1, v_1_1, w_1_1.reshape(1, 3), P_1_12)
+
+    # Frame 3
+    # R_3_2 = R_3_0 * R_0_2 = Transpose(R_0_3) * R_0_2
+    R_3_2 = R[:,:,2].transpose() @ R[:,:,1]
+
+    # P_2_23 = P_2_03 - P_2_02 = R_2_0(P_0_03) - R_2_0(P_0_02) = R_2_0(P_0_03 - P_0_02)
+    # R_2_0 = Transpose(R_0_2)
+    P_2_23 = R[:,:,1].transpose() @ (P[:,2] - P[:,1])
+
+    w_3_3 = angular_velo(R_3_2, w_2_2, Zd_3)
+    v_3_3 = linear_velo(R_3_2, v_2_2, w_2_2.reshape(1,3), P_2_23)
+
+    print(w_3_3)
+    print("")
+    print(v_3_3)
     pass
 
 
