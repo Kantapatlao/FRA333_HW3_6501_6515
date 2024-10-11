@@ -29,13 +29,9 @@ translate_to_end = SE3(utils.a_3 + (-utils.d_6),-utils.d_5,utils.d_4)
 #add end-effect to robot
 robot.tool = translate_to_end
 print(robot)
-def endEffectorJacobianHW3(q:list[float])->list[float]:
-    R , P , R_e , P_e = utils.FKHW3([0,0,0])
-
-    link = ['0to1' , '0to2' ,'0to3' , '0toE']
-
-    for i,l in enumerate(link): #enumerate จะให้ค่า
-        print(i,l)
+def Proof1(q:list[float])->list[float]:
+    # find jacobian from frame 0
+    J = robot.jacob0(q) 
 
 
 #==============================================================================================================#
