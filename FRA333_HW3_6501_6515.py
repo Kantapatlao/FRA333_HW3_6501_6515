@@ -30,8 +30,8 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     Zd_3 = sp.symbols('Zd_3')
 
     # Create lambda function of angular velocity and linear velocity
-    angular_velo = lambda l_Rot_Mat, l_angular, l_Zeta_dot: np.dot(l_Rot_Mat, l_angular) + (sp.Matrix([0,0,l_Zeta_dot]))
-    linear_velo = lambda l_Rot_Mat, l_linear, l_angular, l_pos: np.dot(l_Rot_Mat, (l_linear + np.cross(l_angular, l_pos))) 
+    angular_velo = lambda l_Rot_Mat, l_angular, l_Zeta_dot: np.dot(l_Rot_Mat, l_angular) + (sp.Matrix((0, 0, l_Zeta_dot)))
+    linear_velo = lambda l_Rot_Mat, l_linear, l_angular, l_pos: np.dot(l_Rot_Mat, (l_linear + np.cross(l_angular, l_pos, axis=0))) 
     
     # Frame 0
     w_0_0 = np.zeros([3,1])
@@ -43,7 +43,8 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     P_0_01 = P[:,0]
 
     w_1_1 = angular_velo(R_1_0, w_0_0, Zd_1)
-    v_1_1 = linear_velo(R_1_0, v_0_0, w_0_0.reshape(3), P_0_01)
+    v_1_1 = linear_velo(R_1_0, v_0_0, w_0_0, P_0_01)
+
 
     # Frame 2
     # R_2_1 = R_2_0 * R_0_1 = Transpose(R_0_2) * R_0_1
@@ -54,8 +55,8 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
 
     
     w_2_2 = angular_velo(R_2_1, w_1_1, Zd_2)
-    v_2_2 = linear_velo(R_2_1, v_1_1, w_1_1.reshape(1, 3), P_1_12)
-
+    v_2_2 = linear_velo(R_2_1, v_1_1, w_1_1, P_1_12)
+ 
     # Frame 3
     # R_3_2 = R_3_0 * R_0_2 = Transpose(R_0_3) * R_0_2
     R_3_2 = R[:,:,2].transpose() @ R[:,:,1]
@@ -65,11 +66,9 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     P_2_23 = R[:,:,1].transpose() @ (P[:,2] - P[:,1])
 
     w_3_3 = angular_velo(R_3_2, w_2_2, Zd_3)
-    v_3_3 = linear_velo(R_3_2, v_2_2, w_2_2.reshape(1,3), P_2_23)
+    v_3_3 = linear_velo(R_3_2, v_2_2, w_2_2, P_2_23)
 
-    print(w_3_3)
-    print("")
-    print(v_3_3)
+
     pass
 
 
