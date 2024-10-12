@@ -81,7 +81,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     for row in sp.Matrix(w_0_3):
 
         coeff_buffer = row.as_coefficients_dict(Zd_1, Zd_2, Zd_3)
-        result_in_row = [coeff_buffer[key] for key in dict_order]
+        result_in_row = [float(coeff_buffer[key]) for key in dict_order]
 
         result_in_row = np.array(result_in_row).reshape(3)
         
@@ -90,7 +90,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     for row in sp.Matrix(v_0_3):
 
         coeff_buffer = row.as_coefficients_dict(Zd_1, Zd_2, Zd_3)
-        result_in_row = [coeff_buffer[key] for key in dict_order]
+        result_in_row = [float(coeff_buffer[key]) for key in dict_order]
 
         result_in_row = np.array(result_in_row).reshape(3)
         
@@ -105,7 +105,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     p_0_3e = P[:,3] - P[:,2]
 
     # Define skew-symetric lambda function
-    Skew = lambda v: sp.Matrix([[0, -v[2], v[1]],[v[2], 0, -v[0]],[-v[1], v[0], 0]])
+    Skew = lambda v: np.array([[0, -v[2], v[1]],[v[2], 0, -v[0]],[-v[1], v[0], 0]])
     result_v = result_v + Skew(p_0_3e)
 
     result_w = result_w.tolist()
@@ -122,7 +122,21 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
 #=============================================<คำตอบข้อ 2>======================================================#
 #code here
 def checkSingularityHW3(q:list[float])->bool:
-    pass
+    Jacobian = endEffectorJacobianHW3(q)
+
+    j_w = np.array(Jacobian[0])
+    j_v = np.array(Jacobian[1])
+
+    if np.linalg.det(j_w) < 0.001:
+        print("Singularity in angular movement.")
+        return False
+    
+    if np.linalg.det(j_v) < 0.001:
+        print("Singularity in linear movement.")
+        return False
+    
+    return True
+
 #==============================================================================================================#
 #=============================================<คำตอบข้อ 3>======================================================#
 #code here
@@ -131,4 +145,5 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 #==============================================================================================================#
 
 # Force run and test function
-print(endEffectorJacobianHW3([0,0,0]))
+# print(endEffectorJacobianHW3([0,0,0]))
+checkSingularityHW3([0,0,0])
