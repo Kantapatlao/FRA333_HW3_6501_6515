@@ -108,6 +108,7 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     Skew = lambda v: np.array([[0, -v[2], v[1]],[v[2], 0, -v[0]],[-v[1], v[0], 0]])
     result_v = result_v + Skew(p_0_3e)
 
+    # Convert from numpy array to normal python list
     result_w = result_w.tolist()
     result_v = result_v.tolist()
 
@@ -122,16 +123,19 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
 #=============================================<คำตอบข้อ 2>======================================================#
 #code here
 def checkSingularityHW3(q:list[float])->bool:
+
     Jacobian = endEffectorJacobianHW3(q)
 
+    # Extract jacobian in angular velocity and linear velocity
     j_w = np.array(Jacobian[0])
     j_v = np.array(Jacobian[1])
 
-    if np.linalg.det(j_w) < 0.001:
+    # If determinant of jacobian is near zero.
+    if abs(np.linalg.det(j_w)) < 0.001:
         print("Singularity in angular movement.")
         return False
     
-    if np.linalg.det(j_v) < 0.001:
+    if abs(np.linalg.det(j_v)) < 0.001:
         print("Singularity in linear movement.")
         return False
     
