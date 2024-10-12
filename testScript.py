@@ -57,10 +57,17 @@ def Proof2(q:list[float]):
     else:
         kebka_sing = False
 
-    print("-----------Singularity-------------------")
+    print("-----------Singularity RTB-------------------")
     print(kebka_sing)
     print(J_det)
-    
+
+def Proof3(q:list[float],w:list[float]):
+    J = robot.jacob0(q) 
+    w = np.array(w) #change to nx1 matrix
+    #find taq
+    taq = robot.pay(w,q,J,0)
+    print("-----------Taque RTB-------------------")
+    print(taq)
 
 
 
@@ -78,3 +85,4 @@ def Proof2(q:list[float]):
 q = [1,2,3]
 Proof1(q)
 Proof2(q)
+Proof3(q,[1.0,1.0,1.0,1.0,1.0,1.0])
