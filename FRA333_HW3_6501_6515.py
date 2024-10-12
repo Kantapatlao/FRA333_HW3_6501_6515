@@ -15,6 +15,11 @@ import HW3_utils as utils
 #code here
 def endEffectorJacobianHW3(q:list[float])->list[float]:
     
+    # Sanitize input
+    if (len(q) != 3):
+        raise ValueError(f"List is expected to be size of 3, but got size {len(q)}.")
+
+ 
     # Fetch value from HW3FK function
     R, P, _, _ = utils.FKHW3(q)
     # เพื่อหา Jacobian ของความเร็วเชิงเส้นและเชิงมุม ใช้วิธี Velocity propergation
