@@ -67,35 +67,53 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
 
     w_3_3 = angular_velo(R_3_2, w_2_2, Zd_3)
     v_3_3 = linear_velo(R_3_2, v_2_2, w_2_2, P_2_23)
-
-    print(w_3_3)
-    print("")
-    print(v_3_3)
-    print("")
     
-    result = []
+    # Use frame of reference to frame 0 using rotation matrix
+    R_0_3 = R[:,:,2]
+    w_0_3 = R_0_3.dot(w_3_3)
+    v_0_3 = R_0_3.dot(v_3_3)
+
+    # Extract jacobian
+    result_w = []
+    result_v = []
     dict_order = [Zd_1, Zd_2, Zd_3]
-    for row in w_3_3:
+
+    for row in sp.Matrix(w_0_3):
 
         coeff_buffer = row.as_coefficients_dict(Zd_1, Zd_2, Zd_3)
         result_in_row = [coeff_buffer[key] for key in dict_order]
 
         result_in_row = np.array(result_in_row).reshape(3)
         
-        result.append(result_in_row)
+        result_w.append(result_in_row)
 
-    for row in sp.Matrix(v_3_3):
+    for row in sp.Matrix(v_0_3):
 
         coeff_buffer = row.as_coefficients_dict(Zd_1, Zd_2, Zd_3)
         result_in_row = [coeff_buffer[key] for key in dict_order]
 
         result_in_row = np.array(result_in_row).reshape(3)
         
-        result.append(result_in_row)
+        result_v.append(result_in_row)
 
-    result = np.array(result)
+    result_w = np.array(result_w)
+    result_v = np.array(result_v)
     
-    pass
+    
+    # Since w_0_3 equal to w_0_e, do nothing.
+    # v_0_e = v_0_3 + Skew(r_0_3 * p_3_3e) = v_0_3 + Skew(p_0_3e) = v_0_3 + Skew(p_0_0e - p_o_03)
+    p_0_3e = P[:,3] - P[:,2]
+
+    # Define skew-symetric lambda function
+    Skew = lambda v: sp.Matrix([[0, -v[2], v[1]],[v[2], 0, -v[0]],[-v[1], v[0], 0]])
+    result_v = result_v + Skew(p_0_3e)
+
+    result_w = result_w.tolist()
+    result_v = result_v.tolist()
+
+    result = [result_w, result_v]
+    
+    return result
 
 
 
@@ -113,4 +131,4 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 #==============================================================================================================#
 
 # Force run and test function
-endEffectorJacobianHW3([0,0,0])
+print(endEffectorJacobianHW3([0,0,0]))
