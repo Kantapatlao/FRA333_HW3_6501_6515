@@ -68,7 +68,33 @@ def endEffectorJacobianHW3(q:list[float])->list[float]:
     w_3_3 = angular_velo(R_3_2, w_2_2, Zd_3)
     v_3_3 = linear_velo(R_3_2, v_2_2, w_2_2, P_2_23)
 
+    print(w_3_3)
+    print("")
+    print(v_3_3)
+    print("")
+    
+    result = []
+    dict_order = [Zd_1, Zd_2, Zd_3]
+    for row in w_3_3:
 
+        coeff_buffer = row.as_coefficients_dict(Zd_1, Zd_2, Zd_3)
+        result_in_row = [coeff_buffer[key] for key in dict_order]
+
+        result_in_row = np.array(result_in_row).reshape(3)
+        
+        result.append(result_in_row)
+
+    for row in sp.Matrix(v_3_3):
+
+        coeff_buffer = row.as_coefficients_dict(Zd_1, Zd_2, Zd_3)
+        result_in_row = [coeff_buffer[key] for key in dict_order]
+
+        result_in_row = np.array(result_in_row).reshape(3)
+        
+        result.append(result_in_row)
+
+    result = np.array(result)
+    
     pass
 
 
