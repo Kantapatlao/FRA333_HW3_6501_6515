@@ -145,22 +145,39 @@ def checkSingularityHW3(q:list[float])->bool:
 #=============================================<คำตอบข้อ 3>======================================================#
 #code here
 def computeEffortHW3(q:list[float], w:list[float])->list[float]:
-    
-    # Load data and preprocess
+
+    # Sanitize q input
+    if (len(q) != 3):
+        raise ValueError(f"List is expected to be size of 3, but got size {len(q)}.")
+
+    # Get jacobian and rotation matrix
     Jacobian = endEffectorJacobianHW3(q)
     j_w = np.array(Jacobian[0])
     j_v = np.array(Jacobian[1])
+    _, _, R_0_e, _ = utils.FKHW3(q)
 
 
     # Check for illegal input and seperate them 
     if (len(w) != 6):
         raise ValueError(f"List is expected to be size of 6, but got size {len(w)}.")
-    input_moment = np.array(w[:3])
-    input_force = np.array(w[3:])
+    input_moment_e = np.array(w[:3])
+    input_force_e = np.array(w[3:])
 
+    # Since input force is reference on frame e, but jacobian is on frame 0.
+    # Transform input using R_0_e
 
+    input_moment_0 = np.dot(R_0_e, input_moment_e)
+    input_force_0 = np.dot(R_0_e, input_force_e)
 
-    pass
+    # Compute joint torque for moment at end effector
+    tau_T = np.dot(j_w.transpose(), input_moment_0)
+
+    # Compute joint torque for force at end effector
+    tau_F = np.dot(j_v.transpose(), input_force_0)
+
+    # Combine joint torque used for force and moment at end effector
+    return tau_F + tau_T
+
 
 #==============================================================================================================#
 
