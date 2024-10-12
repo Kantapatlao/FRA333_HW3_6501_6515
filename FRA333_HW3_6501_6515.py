@@ -145,9 +145,26 @@ def checkSingularityHW3(q:list[float])->bool:
 #=============================================<คำตอบข้อ 3>======================================================#
 #code here
 def computeEffortHW3(q:list[float], w:list[float])->list[float]:
+    
+    # Load data and preprocess
+    Jacobian = endEffectorJacobianHW3(q)
+    j_w = np.array(Jacobian[0])
+    j_v = np.array(Jacobian[1])
+
+
+    # Check for illegal input and seperate them 
+    if (len(w) != 6):
+        raise ValueError(f"List is expected to be size of 6, but got size {len(w)}.")
+    input_moment = np.array(w[:3])
+    input_force = np.array(w[3:])
+
+
+
     pass
+
 #==============================================================================================================#
 
 # Force run and test function
 # print(endEffectorJacobianHW3([0,0,0]))
-checkSingularityHW3([0,0,0])
+# checkSingularityHW3([0,0,0])
+computeEffortHW3([0,0,0], [1,2,3,4,5,6])
