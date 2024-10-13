@@ -39,7 +39,10 @@ def Proof1(q:list[float])->list[float]:
     # find jacobian from frame 0
 
     J = robot.jacob0(q) 
-    print("------------------Jacobian------------------------")
+    ref_J = Rob.endEffectorJacobianHW3(q)
+    print("------------------Jacobian FRA333------------------------")
+    print(ref_J)
+    print("------------------Jacobian RTB------------------------")
     J_linear = J[:3]
     J_angular = J[3:]
     print(J_linear)
@@ -52,20 +55,27 @@ def Proof2(q:list[float]):
     J = robot.jacob0(q) 
     J_reduce = J[:3,:] #:3 เอาเเถวบนถึงเเถวที่ 3 , : เท่าหลักทุกตัว
     J_det = np.linalg.det(J_reduce)  #เช็คค่าsingular ต่อไปคือถ้าค่าใกล้ 0 จะถือว่า det เป็น 0 ก็คือการเป็น singularity
-    if abs(J_det) <= 0.00001: #เนื่องจาก det ได้ค่าออกเเค่ตัวเดียว norm คือการรวมค่ามาเป้น vector เดียว เลยต้องใช้เป้น abs เเทน
+    if abs(J_det) < 0.001: #เนื่องจาก det ได้ค่าออกเเค่ตัวเดียว norm คือการรวมค่ามาเป้น vector เดียว เลยต้องใช้เป้น abs เเทน
         kebka_sing = True
     else:
         kebka_sing = False
 
+    ref_sing = Rob.checkSingularityHW3(q)
+    print("-----------Singularity From FRA333-------------------")
+    print(ref_sing)
     print("-----------Singularity RTB-------------------")
     print(kebka_sing)
     print(J_det)
 
-def Proof3(q:list[float],w:list[float]):
+def Proof3(q:list[float],w:list[float]): #w = wench
     J = robot.jacob0(q) 
     w = np.array(w) #change to nx1 matrix
     #find taq
     taq = robot.pay(w,q,J,0)
+    ref_taq = Rob.computeEffortHW3(q,w)
+
+    print("-----------Taque From FRA333-------------------")
+    print(ref_taq)
     print("-----------Taque RTB-------------------")
     print(taq)
 
@@ -82,7 +92,8 @@ def Proof3(q:list[float],w:list[float]):
 #=======================================Test Zone=======================================================#
 #param
 # q = Rob.q  รอดึง q จากไฟล์จู
-q = [1,2,3]
+q = [pi,pi,0]
+w = [1.0,1.0,1.0,1.0,1.0,1.0] #[Moment,Force]
 Proof1(q)
 Proof2(q)
-Proof3(q,[1.0,1.0,1.0,1.0,1.0,1.0])
+Proof3(q,w)
