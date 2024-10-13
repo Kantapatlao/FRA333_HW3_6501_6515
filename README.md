@@ -14,11 +14,16 @@ This repository hosts FRA333 Homework#3 answer. Three important files in this re
 ```
 pip install roboticstoolbox-python numpy==1.24 sympy
 python testScript.py 
+When you run `testScript.py`, the output will compare the results from custom functions with the reference solution is from Robotics toolbox function. Here is what to we expect:
+
+1. Proof1: You will see the Jacobian matrix for frame 0 printed for both methods, along with a comparison result True or False.
+2. Proof2: The output will indicate system is near a singularity or not.
+3. Proof 3: Torque values will be displayed.
 ```
 
 
 ## Repository Description
-รายงานนี้เป็นส่วนหนึ่งของวิชา Kinematic ในการศึกษา วิธีค่าของ Jacobian Matrix, การเช็คว่าเกิด Singularity ซี่งส่งผลให้ระบบสูญเสียการควบคุมไปอย่างน้อย 1 Dof หรือไม่ เเละการหาค่าแรงบิดที่เกิดขึ้นในแต่ละข้อต่อ
+This project is part of the FRA333 Kinematics course, focusing on understanding how to compute the Jacobian matrix for robotic arms, detect singularities and calculate the torque applied at each joint.
 
 
 ## Math and Theory
