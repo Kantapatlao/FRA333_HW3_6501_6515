@@ -70,12 +70,6 @@ translate_to_end = SE3(a_3 -(d_6),-(d_5),d_4) @ SE3.RPY(0.0,-pi/2,0.0)
 #add end-effect to robot
 robot.tool = translate_to_end
 ```
-## Proof part
-``` 
-Use python testScript.py
-to Check answer
-```
-
 ## Proof1 that need to find Jacobian on frame 0
 use funtion jacob0(q)
 
@@ -98,7 +92,18 @@ if abs(J_det) < 0.001: #เนื่องจาก det ได้ค่าออ
 else:
     kebka_sing = False
 "
-if kebka_sing == True => singularity
+if kebka_sing == True => is singularity
+if kebka_sing == False => is not singularity
+
+## Proof3 to show Torque values
+"
+J = robot.jacob0(q) 
+w = np.array(w) #change to nx1 matrix
+#find taq
+taq = robot.pay(w,q,J,0)
+ref_taq = Rob.computeEffortHW3(q,w)
+"
+find taq by using funtion .pay of robotic tool box that require Wench ,Q ,Jacobian and Frame values
 
 
 ## Python package requirement 
@@ -116,7 +121,14 @@ python -m pip install numpy==1.26 sympy roboticstoolbox-python
 
 
 ## How to use?
+```
+Run "python FRA333_HW3_6501_6515.py"
+to see answer.
+And use "python testScript.py"
+to Check answer
+But in "python testScript.py" Already have answer from "python FRA333_HW3_6501_6515"
 
+```
 
 
 ## Reference

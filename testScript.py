@@ -68,7 +68,7 @@ def Proof2(q:list[float]):
     print(ref_sing)
     print("-----------Singularity RTB-------------------")
     print(kebka_sing)
-    print(J_det)
+    
 
 def Proof3(q:list[float],w:list[float]): #w = wench
     J = robot.jacob0(q) 
