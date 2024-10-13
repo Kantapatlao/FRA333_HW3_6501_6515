@@ -23,12 +23,12 @@ import math
 robot = rtb.DHRobot(
     [
         rtb.RevoluteMDH(a = 0, alpha = 0, d = d_1, offset = pi),
-        rtb.RevoluteMDH(a = 0, alpha = pi, d = 0, offset = 0),
-        rtb.RevoluteMDH(a = 0, alpha = a_2, d = 0, offset = 0)
+        rtb.RevoluteMDH(a = 0, alpha = pi/2, d = 0, offset = 0),
+        rtb.RevoluteMDH(a = a_2, alpha = 0, d = 0, offset = 0)
     ], name="HW3rob")
 
 #create joint3 to end-effect
-translate_to_end = SE3(a_3 + (-d_6),-d_5,d_4)
+translate_to_end = SE3(a_3 -(d_6),-(d_5),d_4) @ SE3.RPY(0.0,-pi/2,0.0)
 #add end-effect to robot
 robot.tool = translate_to_end
 #===========================================<ตรวจคำตอบข้อ 1>====================================================#
@@ -39,14 +39,17 @@ def Proof1(q:list[float])->list[float]:
     # find jacobian from frame 0
 
     J = robot.jacob0(q) 
+    
     ref_J = Rob.endEffectorJacobianHW3(q)
+    ref_J = np.array(ref_J) # make in matrix form
     print("------------------Jacobian FRA333------------------------")
     print(ref_J)
     print("------------------Jacobian RTB------------------------")
     J_linear = J[:3]
     J_angular = J[3:]
-    print(J_linear)
     print(J_angular)
+    print(J_linear)
+
 #==============================================================================================================#
 #===========================================<ตรวจคำตอบข้อ 2>====================================================#
 #code here
