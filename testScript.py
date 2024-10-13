@@ -62,7 +62,7 @@ def Proof1(q:list[float], robot: rtb.DHRobot)->bool:
 #==============================================================================================================#
 #===========================================<ตรวจคำตอบข้อ 2>====================================================#
 #code here
-def Proof2(q:list[float]):
+def Proof2(q:list[float], robot: rtb.DHRobot):
     # find jacobian from frame 0
     J = robot.jacob0(q) 
     J_reduce = J[:3,:] #:3 เอาเเถวบนถึงเเถวที่ 3 , : เท่าหลักทุกตัว
@@ -89,7 +89,7 @@ def Proof3(q:list[float],w:list[float],robot): #w = wench
     print("-----------Taque From FRA333-------------------")
     print(ref_taq)
     print("-----------Taque RTB-------------------")
-    print(taq)
+    print(-taq)
     check = np.allclose(ref_taq,taq,1e-3)
     print(check)
 
@@ -108,5 +108,5 @@ def Proof3(q:list[float],w:list[float],robot): #w = wench
 # q = Rob.q  รอดึง q จากไฟล์จู
 
 Proof1(q,robot)
-Proof2(q)
+Proof2(q,robot)
 Proof3(q,w,robot)
