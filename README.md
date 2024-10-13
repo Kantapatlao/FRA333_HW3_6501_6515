@@ -162,8 +162,11 @@ Output from `FRA333_HW3_6501_6515.py` is included in `testScript.py`
 python testScript.py
 ```
 
-
+## Summary
+```
+In some terms we prove that `testScript` and `FRA333_HW3_6501_6515` didn't have same output It because of wrong calculate or something else but we try many formula that have chance to get same output like `testScript.py` 
+```
 
 
 ## Reference
-
+https://numpy.org/doc/stable/reference/generated/numpy.allclose.html
