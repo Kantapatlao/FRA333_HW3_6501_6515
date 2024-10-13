@@ -4,10 +4,10 @@ Author:
 2. Chawit Supcharoen ID: 65340500015
 
 ## Too long; Didn't read!
-This repository hosts FRA333 Homework#3 answer. Three important files in this repo are:
+This repository hosts FRA333 Homework#3 answer. Three important files in this repository are:
 
-1. **FRA333_HW3_6501_6515.py** is the answer compute using velocity propagation method.
-2. **testScript.py** is a script used to proof the answer is correct with the help of roboticstoolbox-python package.
+1. **FRA333_HW3_6501_6515.py** is the answer compute by using velocity propagation method.
+2. **testScript.py** is a script used to verify the answer with the help of roboticstoolbox-python package.
 3. **HW3_utils.py** is provided by instructor to compute transformation matrix.
 
 ### How to run the code?

@@ -138,13 +138,13 @@ def checkSingularityHW3(q:list[float])->bool:
     # If determinant of jacobian is near zero.
     if abs(np.linalg.det(j_w)) < 0.001:
         print("Singularity in angular movement.")
-        return False
+        return True
     
     if abs(np.linalg.det(j_v)) < 0.001:
         print("Singularity in linear movement.")
-        return False
+        return True
     
-    return True
+    return False
 
 #==============================================================================================================#
 #=============================================<คำตอบข้อ 3>======================================================#
