@@ -4,7 +4,7 @@ Author:
 2. Chawit Supcharoen ID: 65340500015
 
 ## Too long; Didn't read!
-This repository host FRA333 Homework#3 answer. The code consist of 3 files.
+This repository hosts FRA333 Homework#3 answer. Three important files in this repo are:
 
 1. **FRA333_HW3_6501_6515.py** is the answer compute using velocity propagation method.
 2. **testScript.py** is a script used to proof the answer is correct with the help of roboticstoolbox-python package.
@@ -20,22 +20,22 @@ sudo apt install gcc vim ...
 
 
 ## Math and Theory
-We use 2 methods to calculate jacobian.
+Two methods are used to calculate jacobian.
 1. Partial differential method
 2. Velocity propagation method
 
-Since, partial differential method can be integrated using roboticstoolbox-python package, so it's used for testing. Velocity propergation method is used for main calculation.
+Partial differential method integrated in roboticstoolbox-python package was used for code testing. Velocity propergation method will be used for main calculation.
 
 ### Velocity propagation method
-This method relied on formular that calculate angular and linear velocity of each frame then keep propagate until end-effector's frame is reached.
+This method relied on formular that calculate angular and linear velocity of each frame then keep propagate until end-effector's frame has reached.
 
-> <sup>i+1</sup>ω<sub>i+1</sub> = <sup>i+1</sup>R<sub>i</sub> ( <sup>i</sup>ω<sub>i</sub> ) + θ'<sub>i+1</sub>z &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*when θ'z is revolute joint*\
-> <sup>i+1</sup>v<sub>i+1</sub> = <sup>i+1</sup>R<sub>i</sub> ( <sup>i</sup>v<sub>i</sub> + <sup>i</sup>ω<sub>i</sub> x <sup>i</sup>p<sub>i,i+1</sub>) + d'<sub>i+1</sub>z &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*when d'z is prismatic joint*
+> <sup>i+1</sup>ω<sub>i+1</sub> = <sup>i+1</sup>R<sub>i</sub> ( <sup>i</sup>ω<sub>i</sub> ) + θ'<sub>i+1</sub>z &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*when θ'z is revolute joint's angular speed*\
+> <sup>i+1</sup>v<sub>i+1</sub> = <sup>i+1</sup>R<sub>i</sub> ( <sup>i</sup>v<sub>i</sub> + <sup>i</sup>ω<sub>i</sub> x <sup>i</sup>p<sub>i,i+1</sub>) + d'<sub>i+1</sub>z &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;*when d'z is prismatic joint's speed*
 
 pic1\...
 
 ### Check for singularity
-To check for singularity, seperate the jacobian into jacobian for linear velocity and jacobian for angular velocity (Each should be 3x3 matrix). Find determinant of both jacobian, if any is near zero (<0.001), function return as false. Otherwise, return true.\
+To check for singularity, split the jacobian into jacobian for linear velocity and jacobian for angular velocity (Each should be 3x3 matrix). Find determinant of both jacobian, if any is near zero (<0.001), function return as true. Otherwise, return false.\
 \
 Code pic...
 
@@ -43,18 +43,19 @@ Code pic...
 Effort can be compute from ***"Force-velocity relationship"*** formula.
 
 > τ<sub>f</sub> = J<sub>v</sub><sup>t</sup> x Force\
-> τ<sub>m</sub> = J<sub>ω</sub><sup>t</sup> x Moment
+> τ<sub>m</sub> = J<sub>ω</sub><sup>t</sup> x Moment\
+> Στ = τ<sub>f</sub> +  τ<sub>m</sub>
 
 Code pic...
 
 ## Testing method
 
-## Require python package
+## Python package requirement 
 1. Numpy version 1.26
 2. Sympy version 1.13.3
 3. roboticstoolbox-python 1.1.1 
 
-***Note*** : Numpy version 2.0 is not support. It will break roboticstoolbox-python package. If you've numpy version greater than 1.26, consider installing numpy version 1.26 on seperated python virtual environment. [Guide](https://docs.python.org/3/library/venv.html)
+***Note*** : This roboticstoolbox-python version doesn't support numpy 2.0 and above yet. If you've numpy version is newer than 1.26, consider installing numpy version 1.26 on seperated python virtual environment. [Guide](https://docs.python.org/3/library/venv.html)
 
 ### Install package using pip
 ```
