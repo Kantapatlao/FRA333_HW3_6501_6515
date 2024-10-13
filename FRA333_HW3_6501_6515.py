@@ -188,6 +188,6 @@ def computeEffortHW3(q:list[float], w:list[float])->list[float]:
 #==============================================================================================================#
 
 # Force run and test function
-# print(endEffectorJacobianHW3([0,0,0]))
+print(endEffectorJacobianHW3([0,-3.14/2,-0.2]))
 # checkSingularityHW3([0,0,0])
-computeEffortHW3([0,0,0], [1,2,3,4,5,6])
+# computeEffortHW3([0,0,0], [1,2,3,4,5,6])
