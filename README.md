@@ -12,11 +12,18 @@ This repository hosts FRA333 Homework#3 answer. Three important files in this re
 
 ### How to run the code?
 ```
-sudo apt install gcc vim ...
+sudo apt install gcc vim
+```
+## On command prompt
+```
+pip install roboticstoolbox-python
+
+pip install numpy==1.24.4
 ```
 
+
 ## Repository Description
-รายงานนี้เป็นส่วนหนึ่งของวิชา Kinematic ...
+รายงานนี้เป็นส่วนหนึ่งของวิชา Kinematic ในการศึกษา วิธีค่าของ Jacobian Matrix , การเช็คว่าเกิดมีการทำให้ระบบ สูญเสียการควบคุมไปมากกว่าหรือเท่ากับ 1 Dof ไหม เเละการหาค่าทอร์ค 
 
 
 ## Math and Theory
@@ -49,9 +56,53 @@ Effort can be compute from ***"Force-velocity relationship"*** formula.
 Code pic...
 
 ## Testing method
+## First create MDH parameters
+```
+robot = rtb.DHRobot(
+    [
+        rtb.RevoluteMDH(a = 0, alpha = 0, d = d_1, offset = pi),
+        rtb.RevoluteMDH(a = 0, alpha = pi/2, d = 0, offset = 0),
+        rtb.RevoluteMDH(a = a_2, alpha = 0, d = 0, offset = 0)
+    ], name="HW3rob")
+
+#create joint3 to end-effect
+translate_to_end = SE3(a_3 -(d_6),-(d_5),d_4) @ SE3.RPY(0.0,-pi/2,0.0)
+#add end-effect to robot
+robot.tool = translate_to_end
+```
+## Proof part
+``` 
+Use python testScript.py
+to Check answer
+```
+
+## Proof1 that need to find Jacobian on frame 0
+use funtion jacob0(q)
+
+"J = robot.jacob0(q) " to create Jacobian on frame 0
+
+
+
+"J_linear = J[:3]
+J_angular = J[3:]
+print(J_angular)
+print(J_linear)" For show jacobian matrix
+
+## Proof2 to show singularity
+"
+J = robot.jacob0(q) 
+J_reduce = J[:3,:] #:3 เอาเเถวบนถึงเเถวที่ 3 , : เท่าหลักทุกตัว
+J_det = np.linalg.det(J_reduce)  #เช็คค่าsingular ต่อไปคือถ้าค่าใกล้ 0 จะถือว่า det เป็น 0 ก็คือการเป็น singularity
+if abs(J_det) < 0.001: #เนื่องจาก det ได้ค่าออกเเค่ตัวเดียว norm คือการรวมค่ามาเป้น vector เดียว เลยต้องใช้เป้น abs เเทน
+    kebka_sing = True
+else:
+    kebka_sing = False
+"
+if kebka_sing == True => singularity
+
 
 ## Python package requirement 
-1. Numpy version 1.26
+1. Numpy version 1.24.4
 2. Sympy version 1.13.3
 3. roboticstoolbox-python 1.1.1 
 
